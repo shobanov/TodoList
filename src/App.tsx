@@ -15,12 +15,20 @@ export type FilterValuesType = 'all'|'active'|'completed'
 function App() {
 
     const [tasks, setTasks] = useState<Array<TaskType>>( [
-        {id: v1(), title: 'HTML', isDone: true},
-        {id: v1(), title: 'CSS', isDone: true},
+        {id: v1(), title: 'HTML', isDone: false},
+        {id: v1(), title: 'CSS', isDone: false},
         {id: v1(), title: 'React', isDone: false}
     ])
 
     const [filter, setFilter] = useState<FilterValuesType>('all')
+
+    function changeStatus(taskId: string, isDone: boolean) {
+        let task = tasks.find(t => t.id === taskId);
+        if (task) {
+            task.isDone = isDone;
+        }
+        setTasks([...tasks]);
+    }
 
     function removeTask(taskID: string) {
        const filteredTasks = tasks.filter(t => t.id !== taskID)
@@ -60,6 +68,8 @@ function App() {
                 removeTask={removeTask}
                 changeFilter={changeFilter}
                 addTask={addTask}
+                changeStatus={changeStatus}
+                filter={filter}
             />
         </div>
     );

@@ -6,3 +6,23 @@
 .App > div {
   margin-right: 50px;
 }
+
+.error {
+  border: red 1px solid;
+}
+
+.error-message {
+  color: red;
+}
+
+.active-filter {
+  background-color: cornflowerblue;
+}
+
+.is-done {
+  opacity: 20%;
+}
+
+ul {
+  list-style-type: circle;
+}
