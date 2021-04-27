@@ -1,8 +1,13 @@
-import React, {useState} from 'react';
-import './App.css';
-import TodoList from './TodoList';
+import React, {useState} from 'react'
+import './App.css'
+import TodoList from './TodoList'
 import {v1} from "uuid"
 
+export type FilterValuesType = 'all'|'active'|'completed'
+
+// type TaskStateType = {
+//     [key: string]: Array<TaskStateType>
+// }
 
 export type TaskType = { 
     id: string
@@ -10,70 +15,100 @@ export type TaskType = {
     isDone: boolean
 }
 
-export type FilterValuesType = 'all'|'active'|'completed'
+export type TodoListType = {
+    id: string
+    title: string
+    filter: FilterValuesType
+}
 
 function App() {
 
-    const [tasks, setTasks] = useState<Array<TaskType>>( [
-        {id: v1(), title: 'HTML', isDone: false},
-        {id: v1(), title: 'CSS', isDone: false},
-        {id: v1(), title: 'React', isDone: false}
-    ])
-
-    const [filter, setFilter] = useState<FilterValuesType>('all')
-
-    function changeStatus(taskId: string, isDone: boolean) {
-        let task = tasks.find(t => t.id === taskId);
-        if (task) {
-            task.isDone = isDone;
-        }
-        setTasks([...tasks]);
+    function removeTask(taskID: string, todoListID: string) {
+        tasks[todoListID] = tasks[todoListID].filter(t => t.id !== taskID) 
+        setTasks({...tasks})
     }
-
-    function removeTask(taskID: string) {
-       const filteredTasks = tasks.filter(t => t.id !== taskID)
-        setTasks(filteredTasks)
-    }
-
-    function addTask(title: string) {
-        let task: TaskType = {
+    
+    function addTask(title: string, todoListID: string) {
+        let newTask: TaskType = {
             id: v1(),
             title: title,
             isDone: false
         }
-        let newTasks = [task, ...tasks]
-        setTasks(newTasks)
+        setTasks({...tasks, [todoListID]: [newTask, ...tasks[todoListID]]})
+    }
+    
+    function changeFilter(value: FilterValuesType, todoListID: string) {
+        setTodoLists(todoLists.map(tl => tl.id === todoListID ? {...tl, filter: value} : tl))
     }
 
-    function changeFilter(valueTypes: FilterValuesType) {
-        return setFilter(valueTypes)
+
+    function changeStatus(taskID: string, isDone: boolean, todoListID: string) {
+        setTasks({...tasks, [todoListID]: tasks[todoListID].map(t => t.id === taskID ? {...t, isDone: isDone} : t)
+        })
     }
 
-    function getTasksFiltered() {
-        switch (filter) {
-            case 'active':
-                return tasks.filter(t => !t.isDone)
-            case 'completed':
-                return tasks.filter(t => t.isDone)
+    const todoListID1 = v1()
+    const todoListID2 = v1()
+
+    const removeTodoList = (todoListID: string) => {
+        let filteredTodoList = todoLists.filter(tl => tl.id !== todoListID) 
+        setTodoLists(filteredTodoList)
+        delete tasks[todoListID]
+        setTasks({...tasks})
+    }
+
+    const [todoLists, setTodoLists] = useState<Array<TodoListType>> ([
+        {id: todoListID1, title: 'What to learn', filter: 'all'},
+        {id: todoListID2, title: 'What to read', filter: 'all'}
+    ])
+    
+    const [tasks, setTasks] = useState ({
+        [todoListID1]: [ 
+            {id: v1(), title: 'HTML', isDone: false},
+            {id: v1(), title: 'CSS', isDone: false},
+            {id: v1(), title: 'React', isDone: false}
+        ],
+        [todoListID2]: [
+            {id: v1(), title: 'Tolstoy', isDone: false},
+            {id: v1(), title: 'Pushkin', isDone: false},
+            {id: v1(), title: 'Agata-Kristi', isDone: false}
+        ]
+    })
+
+    function tasksForTodoList(todoList: TodoListType)  {
+        switch (todoList.filter) {
+            case "active":
+                return tasks[todoList.id].filter(t => !t.isDone)
+            case "completed":
+                return tasks[todoList.id].filter(t => t.isDone)
             default:
-                return tasks
+                return tasks[todoList.id]
         }
     }
 
-    return (
-        <div className='App'>
+    const todoListComponents = todoLists.map(tl => {
+        return ( 
             <TodoList
-                title={'What to learn'} 
-                tasks={getTasksFiltered()}
+                key={tl.id}
+                id={tl.id}
+                title={tl.title} 
+                tasks={tasksForTodoList(tl)}
                 removeTask={removeTask}
                 changeFilter={changeFilter}
                 addTask={addTask}
                 changeStatus={changeStatus}
-                filter={filter}
+                filter={tl.filter}
+                removeTodoList={removeTodoList}
             />
+        )
+    })
+
+    return (
+        <div className='App'>
+            {todoListComponents}
         </div>
     );
 }
 
-export default App;
+export default App
 
