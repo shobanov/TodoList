@@ -3,6 +3,7 @@ import './App.css'
 import TodoList from './TodoList'
 import AddItemForm from './AddItemForm'
 import {v1} from "uuid"
+import { AppBar, Button, Container, Grid, IconButton, Menu, Paper, Toolbar, Typography } from '@material-ui/core'
 
 export type FilterValuesType = 'all'|'active'|'completed'
 
@@ -116,33 +117,56 @@ function App() {
             [todoList.id]: []
         })
     }
-
-    const todoListComponents = todoLists.map(tl => {
-        return ( 
-            <TodoList
-                key={tl.id}
-                id={tl.id}
-                title={tl.title} 
-                tasks={tasksForTodoList(tl)}
-                removeTask={removeTask}
-                changeFilter={changeFilter}
-                addTask={addTask}
-                changeTaskStatus={changeTaskStatus}
-                filter={tl.filter}
-                removeTodoList={removeTodoList}
-                changeTaskTitle={changeTaskTitle}
-                changeTodoListTitle={changeTodoListTitle}
-            />
-        )
-    })
-
+            
     return (
-        <div className='App'>
-             <AddItemForm addItem={addTodoList} />
-            {todoListComponents}
+        <div>
+            <AppBar position="static">
+                <Toolbar>
+                    <IconButton edge="start" color="inherit" aria-label="menu">
+                    </IconButton>
+                    <Typography variant="h5">
+                        News
+                    </Typography>
+                    <Button color="inherit">Login</Button>
+                </Toolbar>
+            </AppBar>
+            <Container fixed>
+                <Grid container style={ { padding: "20px" } }>
+                    <AddItemForm addItem={addTodoList} />
+                </Grid>
+                <Grid container spacing={3}>
+                    {
+                        todoLists.map(tl => {
+                            return (
+                                <Grid item>
+                                    <Paper elevation={3} style={ { padding: "15px" } }>
+                                        <TodoList
+                                            key={tl.id}
+                                            id={tl.id}
+                                            title={tl.title} 
+                                            tasks={tasksForTodoList(tl)}
+                                            removeTask={removeTask}
+                                            changeFilter={changeFilter}
+                                            addTask={addTask}
+                                            changeTaskStatus={changeTaskStatus}
+                                            filter={tl.filter}
+                                            removeTodoList={removeTodoList}
+                                            changeTaskTitle={changeTaskTitle}
+                                            changeTodoListTitle={changeTodoListTitle}
+                                        />
+                                    </Paper>
+                                </Grid>
+                            )
+                        })
+                    }
+                </Grid>
+            </Container>
+            
+
         </div>
-    );
+    )
 }
 
 export default App
 
+//container spacing={5} direction="row" justify="center">
