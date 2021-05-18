@@ -13,7 +13,7 @@ export type TaskType = {
     isDone: boolean
 }
 
-export type TodoListType = {
+export type TodolistType = {
     id: string
     title: string
     filter: FilterValuesType
@@ -58,16 +58,15 @@ function App() {
         }
     }
 
-    const todoListID1 = v1()
-    const todoListID2 = v1()
-
     const removeTodoList = (todoListID: string) => {
-        let filteredTodoList = todoLists.filter(tl => tl.id !== todoListID) 
-        setTodoLists(filteredTodoList)
+        // let filteredTodoList = todoLists.filter(tl => tl.id !== todoListID) 
+        // setTodoLists(filteredTodoList)
+        // delete tasks[todoListID]
+        setTodoLists(todoLists.filter(tl => tl.id !== todoListID))
         delete tasks[todoListID]
         setTasks({...tasks})
     }
-
+    
     function changeTodoListTitle (todoListID: string, newTitle: string) {
         const todoList = todoLists.find(tl => tl.id === todoListID)
         if (todoList) {
@@ -75,8 +74,11 @@ function App() {
             setTodoLists([...todoLists])
         }
     } 
+    
+    const todoListID1 = v1()
+    const todoListID2 = v1()
 
-    const [todoLists, setTodoLists] = useState<Array<TodoListType>> ([
+    const [todoLists, setTodoLists] = useState<Array<TodolistType>> ([
         {id: todoListID1, title: 'What to learn', filter: 'all'},
         {id: todoListID2, title: 'What to read', filter: 'all'}
     ])
@@ -94,7 +96,7 @@ function App() {
         ]
     })
 
-    function tasksForTodoList(todoList: TodoListType)  {
+    function tasksForTodoList(todoList: TodolistType)  {
         switch (todoList.filter) {
             case "active":
                 return tasks[todoList.id].filter(t => !t.isDone)
@@ -106,7 +108,7 @@ function App() {
     }
 
     function addTodoList(title: string) {
-        let todoList: TodoListType = {
+        let todoList: TodolistType = {
             id: v1(),
             filter: 'all',
             title: title
