@@ -19,10 +19,9 @@ function EditableSpan(props: EditableSpanPropsType) {
     props.onChange(title)
   }
   const onChangeTitle = (e: ChangeEvent<HTMLInputElement>) => setTitle(e.currentTarget.value)
-
-  return  editMode
-    ? <TextField value={title} onChange={onChangeTitle} onBlur={activateViewMode} autoFocus/>
-    : <span onDoubleClick={activateEditMode}>{props.title}</span>
+    return  editMode
+      ? <TextField value={title} onChange={onChangeTitle} onBlur={activateViewMode} autoFocus/>
+      : <span onDoubleClick={activateEditMode}>{props.title}</span>
 }
 
 export default EditableSpan
