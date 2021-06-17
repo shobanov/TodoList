@@ -6,12 +6,14 @@ import React, { ChangeEvent, useState, KeyboardEvent } from 'react'
         addItem: (title: string) => void
     }
 
-    function AddItemForm(props: AddItemFormPropsType) {
+    const AddItemForm = React.memo( (props: AddItemFormPropsType) => {
 
+        console.log("AddItemForm is called")
+        
         const [title, setTitle ] = useState('')
         const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
-        const addTask = () => {
+        const addItem = () => {
             if(title.trim() !== '') {
                 props.addItem(title.trim())
                 setTitle('')
@@ -21,13 +23,15 @@ import React, { ChangeEvent, useState, KeyboardEvent } from 'react'
         }
 
         const onChangeTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
+            if (errorMessage !== null) {
+                setErrorMessage(null)
+            }
             setTitle(e.currentTarget.value)
-            setErrorMessage(null)
         }
 
         const onPressEnterHandler = (e: KeyboardEvent<HTMLInputElement>) => {
             if(e.charCode === 13) {
-                addTask()
+                addItem()
             }
         }
 
@@ -46,7 +50,7 @@ import React, { ChangeEvent, useState, KeyboardEvent } from 'react'
                     size={'small'}
                 />
                 <IconButton
-                    onClick={addTask}
+                    onClick={addItem}
                     color={'primary'}
                 >
                     <Add fontSize={'large'}/>
@@ -54,7 +58,7 @@ import React, { ChangeEvent, useState, KeyboardEvent } from 'react'
                 
             </div>
         )
-    }
+    })
 
     export default AddItemForm
 
