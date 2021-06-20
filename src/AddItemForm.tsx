@@ -61,5 +61,3 @@ import React, { ChangeEvent, useState, KeyboardEvent } from 'react'
     })
 
     export default AddItemForm
-
-    //className={errorMessage ? 'error' : ''}

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useCallback } from 'react'
+import React, { useCallback } from 'react'
 import { FilterValuesType } from './AppWithRedux'
 import AddItemForm from './AddItemForm'
 import EditableSpan from './EditableSpan'
