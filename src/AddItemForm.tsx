@@ -8,8 +8,6 @@ import React, { ChangeEvent, useState, KeyboardEvent } from 'react'
 
     const AddItemForm = React.memo( (props: AddItemFormPropsType) => {
 
-        console.log("AddItemForm is called")
-        
         const [title, setTitle ] = useState('')
         const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
