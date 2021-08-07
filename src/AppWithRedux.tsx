@@ -1,15 +1,13 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import './App.css'
 import TodoList from './TodoList'
 import AddItemForm from './AddItemForm'
 import { AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography } from '@material-ui/core'
-import { addTodolistAC, changeTodolistFilterAC, changeTodolistTitleAC, removeTodolistAC, TodolistDomainType } from './state/todolists-reducer'
+import { addTodolistAC, changeTodolistFilterAC, changeTodolistTitleAC, fetchTodolistsTC, FilterValuesType, removeTodolistAC, TodolistDomainType } from './state/todolists-reducer'
 import { useDispatch, useSelector } from 'react-redux'
-import { AppRootState } from './state/store'
+import { AppRootStateType } from './state/store'
 import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC } from './state/tasks-reducer'
-import { TaskStatuses, TaskType} from './api/todolist-api'
-
-export type FilterValuesType = 'all'|'active'|'completed'
+import { TaskStatuses, TaskType, todolistsAPI} from './api/todolist-api'
 
 export type TasksStateType = {
     [key: string]: Array<TaskType>
@@ -17,12 +15,19 @@ export type TasksStateType = {
 
 function AppWithRedux() {
 
-    const todolists = useSelector<AppRootState, Array<TodolistDomainType>>(state => state.todolists)
-    const tasks = useSelector<AppRootState, TasksStateType>(state => state.tasks)
+    const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists)
+    const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
     const dispatch = useDispatch()
 
+    useEffect(() => {
+        dispatch(fetchTodolistsTC())    // dispatch thunk
+    }, [])
+
     const removeTask = useCallback(function (id: string, todolistId: string) {
-        dispatch(removeTaskAC(id, todolistId))
+        todolistsAPI.deleteTask(todolistId, id)
+            .then(res => {
+                dispatch(removeTaskAC(id, todolistId))
+            })
     }, [dispatch])
 
     const addTask = useCallback(function (title: string, todolistId: string) {
@@ -102,4 +107,4 @@ function AppWithRedux() {
     )
 }
 
-    export default AppWithRedux
+export default AppWithRedux

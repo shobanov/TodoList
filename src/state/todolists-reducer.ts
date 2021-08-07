@@ -1,7 +1,8 @@
+import { Dispatch } from "redux"
 import { v1 } from "uuid"
-import { TodolistType } from "../api/todolist-api"
+import { todolistsAPI, TodolistType } from "../api/todolist-api"
 
-export type ActionsType = RemoveTodolistActionType | AddTodolistActionType | ChangeTodolistTitleActionType | ChangeTodolistFilterActionType
+export type ActionsType = RemoveTodolistActionType | AddTodolistActionType | ChangeTodolistTitleActionType | ChangeTodolistFilterActionType | SetTodolistsActionType
 
 export type FilterValuesType = 'all'|'active'|'completed'
 
@@ -28,9 +29,14 @@ export type ChangeTodolistFilterActionType = {
   id: string
 }
 
+export type SetTodolistsActionType = { 
+  type: 'SET-TODOLISTS'
+  todolists: Array<TodolistType>
+}
+
 export type TodolistDomainType = TodolistType & {
   filter: FilterValuesType
-  status: boolean
+  //status: boolean
 }
 
 const initialState: Array<TodolistDomainType> = []
@@ -48,7 +54,6 @@ export const todolistsReducer = (state: Array<TodolistDomainType> = initialState
           filter: 'all',
           addedDate: '',
           order: 0,
-          status: false
         }, ...state]
       }
       case 'CHANGE-TODOLIST-TITLE': {
@@ -64,6 +69,14 @@ export const todolistsReducer = (state: Array<TodolistDomainType> = initialState
           todolist.filter = action.filter
         }
         return [...state]
+      }
+      case 'SET-TODOLISTS': {
+        return action.todolists.map(tl => {
+          return {
+            ...tl,
+            filter: 'all'
+          }
+        })
       }
       default:
           return state
@@ -87,4 +100,16 @@ export const changeTodolistFilterAC = (value: FilterValuesType, todolistId: stri
   return { type: 'CHANGE-TODOLIST-FILTER', filter: value, id: todolistId}
 }
 
+export const setTodolistAC = (todolists: Array<TodolistType>): SetTodolistsActionType => {
+  return { type: 'SET-TODOLISTS', todolists: todolists}
+}
 
+
+export const fetchTodolistsTC = () => {
+  return (dispatch: Dispatch) => {
+    todolistsAPI.getTodolists()
+      .then((res) => {
+        dispatch(setTodolistAC(res.data))
+      })
+  }
+}
