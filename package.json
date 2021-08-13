@@ -1,6 +1,6 @@
 {
   "homepage": "https://shobanov.github.io/TodoList",
-  "name": "it-incubator-todolist-ts",
+  "name": "todolist",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

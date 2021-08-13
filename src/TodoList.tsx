@@ -30,11 +30,11 @@ export const TodoList = React.memo (function(props: PropsType) {
 
     useEffect(() => {
         dispatch(fetchTasksTC(props.id))
-    }, [])
+    }, [dispatch, props.id])
 
     const addTask = useCallback((title: string) => {
         props.addTask(title, props.id)
-    }, [props.addTask, props.id])
+    }, [props])
     
     const removeTodoList = () => {
         props.removeTodoList(props.id)
@@ -42,11 +42,11 @@ export const TodoList = React.memo (function(props: PropsType) {
 
     const changeTodoListTitle = useCallback((newTitle: string) => {
         props.changeTodoListTitle(props.id, newTitle)
-    }, [props.changeTodoListTitle, props.id])
+    }, [props])
 
-    const onAllClickHandler = useCallback( () => props.changeFilter('all', props.id), [props.changeFilter, props.id])
-    const onActiveClickHandler = useCallback( () => props.changeFilter('active', props.id), [props.changeFilter, props.id])
-    const onCompletedClickHandler = useCallback( () => props.changeFilter('completed', props.id), [props.changeFilter, props.id])
+    const onAllClickHandler = useCallback( () => props.changeFilter('all', props.id), [props])
+    const onActiveClickHandler = useCallback( () => props.changeFilter('active', props.id), [props])
+    const onCompletedClickHandler = useCallback( () => props.changeFilter('completed', props.id), [props])
 
     let tasksForTodoList = props.tasks
 
@@ -82,21 +82,24 @@ export const TodoList = React.memo (function(props: PropsType) {
                     variant={props.filter === 'all' ? 'contained' : 'text'}
                     onClick={onAllClickHandler}
                     size={'small'}
-                >All
+                >
+                    All
                 </Button>
                 <Button
                     variant={props.filter === 'active' ? 'contained' : 'text'}
                     onClick={onActiveClickHandler}
                     color={'primary'}
                     size={'small'}
-                >Active
+                >
+                    Active
                 </Button>
                 <Button
                     variant={props.filter === 'completed' ? 'contained' : 'text'}
                     onClick={onCompletedClickHandler}
-                    color={'secondary'}
-                    size={'small'}
-                >Completed
+                    color="secondary"
+                    size="small"
+                >
+                    Completed
                 </Button>
             </div>
         </div>
