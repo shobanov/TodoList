@@ -1,6 +1,6 @@
-import { addTodolistAC, changeTodolistFilterAC, changeTodolistTitleAC, FilterValuesType, removeTodolistAC, setTodolistAC, TodolistDomainType, todolistsReducer } from './todolists-reducer'
+import { addTodolistAC, changeTodolistFilterAC, changeTodolistTitleAC, FilterValuesType, removeTodolistAC, setTodolistsAC, TodolistDomainType, todolistsReducer } from './todolists-reducer'
 import { v1 } from 'uuid'
-import { TodolistType } from '../api/todolist-api'
+import { TodolistType } from '../../api/todolist-api'
 
 
 let todolistId1 = v1()
@@ -70,7 +70,7 @@ test('correct filter of todolist should be changed', () => {
 
 test('Todolists should be set to the state', () => {
 
-   const action = setTodolistAC(startState)
+   const action = setTodolistsAC(startState)
 
    const endState = todolistsReducer([], action);
 

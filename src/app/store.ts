@@ -1,7 +1,7 @@
 import {applyMiddleware, combineReducers, createStore} from 'redux'
 import thunkMiddleware from 'redux-thunk'
-import { tasksReducer } from './tasks-reducer'
-import { todolistsReducer } from './todolists-reducer'
+import { tasksReducer } from '../features/TodolistsList/tasks-reducer'
+import { todolistsReducer } from '../features/TodolistsList/todolists-reducer'
 
 // creating the structure of the state object
 const rootReducer = combineReducers({
