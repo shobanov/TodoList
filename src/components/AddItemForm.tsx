@@ -4,16 +4,17 @@ import React, { ChangeEvent, useState, KeyboardEvent } from 'react'
 
     type AddItemFormPropsType = {
         addItem: (title: string) => void
+        disabled?: boolean
     }
 
-    const AddItemForm = React.memo( (props: AddItemFormPropsType) => {
+    const AddItemForm = React.memo(({addItem, disabled = false}: AddItemFormPropsType) => {
 
         const [title, setTitle ] = useState('')
         const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
-        const addItem = () => {
+        const addItemHandler = () => {
             if(title.trim() !== '') {
-                props.addItem(title.trim())
+                addItem(title.trim())
                 setTitle('')
             } else {
                 setErrorMessage('Title is required!')
@@ -29,13 +30,14 @@ import React, { ChangeEvent, useState, KeyboardEvent } from 'react'
 
         const onPressEnterHandler = (e: KeyboardEvent<HTMLInputElement>) => {
             if(e.charCode === 13) {
-                addItem()
+                addItemHandler()
             }
         }
 
         return (
             <div>
                 <TextField
+                    disabled={disabled}
                     value={title}
                     id={'outlined-error-helper-text'}
                     variant={'outlined'}
@@ -48,10 +50,11 @@ import React, { ChangeEvent, useState, KeyboardEvent } from 'react'
                     size={'small'}
                 />
                 <IconButton
-                    onClick={addItem}
+                    disabled={disabled}
+                    onClick={addItemHandler}
                     color={'primary'}
                 >
-                    <Add fontSize={'large'}/>
+                    <Add fontSize={'large'} />
                 </IconButton>
                 
             </div>

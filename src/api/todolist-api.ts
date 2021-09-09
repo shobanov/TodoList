@@ -13,12 +13,26 @@ const instance = axios.create({
 })
 
 // api
+export const authAPI = {
+  login(data: LoginParamsType) {
+    return instance.post<ResponseType<{userId?: number}>>('auth/login', data)
+  },
+  me() {
+    const promise = instance.get<ResponseType<{id: number, email: string, login: string}>>('auth/me')
+    return promise
+  },
+  logout() {
+    const promise = instance.delete<ResponseType<{userId?: number}>>('auth/login')
+    return promise
+  }
+}
+
 export const todolistsAPI = {
   getTodolists() {
     return instance.get<Array<TodolistType>>('todo-lists')
   },
   createTodolist(title: string) {
-    return instance.post<ResponseType<{ item: TodolistType }>>('todo-lists', {title: title})
+    return instance.post<ResponseType<{item: TodolistType}>>('todo-lists', {title: title})
   },
   deleteTodolist(id: string) {
     return instance.delete<ResponseType>(`todo-lists/${id}`)
@@ -33,7 +47,7 @@ export const todolistsAPI = {
     return instance.delete(`todo-lists/${todolistId}/tasks/${taskId}`)
   },
   createTask(todolistId: string, taskTitle: string) {
-    return instance.post<ResponseType<{ item:TaskType }>>(`todo-lists/${todolistId}/tasks`, {title: taskTitle})
+    return instance.post<ResponseType<{item:TaskType}>>(`todo-lists/${todolistId}/tasks`, {title: taskTitle})
   },
   updateTask(todolistId: string, taskId: string, model: UpdateTaskModelType) {
     return instance.put<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`, model)
@@ -47,9 +61,9 @@ export type TodolistType = {
   addedDate: string
   order: number
 }
-type ResponseType<D = {}> = {
+export type ResponseType<D = {}> = {
   resultCode: number
-  messages: Array<string> // or string[]
+  messages: Array<string>
   data: D
 }
 export enum TaskStatuses {
@@ -97,4 +111,12 @@ export type UpdateTaskModelType = {
   priority: TodoTaskPriorities
   startDate: string
   deadline: string
+}
+
+// paramsType
+export type LoginParamsType = {
+  email: string
+  password: string
+  rememberMe: boolean
+  captcha?: string
 }
