@@ -48,7 +48,6 @@ export const Login = () => {
             <FormGroup>
               <TextField
                 label="Email"
-                placeholder="free@samuraijs.com"
                 margin="normal"
                 {...formik.getFieldProps("email")}
               />
@@ -56,7 +55,6 @@ export const Login = () => {
               <TextField
                 type="password"
                 label="Password"
-                placeholder="free"
                 margin="normal"
                 {...formik.getFieldProps("password")}
               />
@@ -72,6 +70,7 @@ export const Login = () => {
             </FormGroup>
           </FormControl>
         </form>
+        <br/>Login: free@samuraijs.com<br/>Password: free
       </Grid>
     </Grid>
   )
