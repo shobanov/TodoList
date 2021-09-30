@@ -51,9 +51,10 @@ export const removeTodolistTC = (todolistId: string) => (dispatch: Dispatch<Thun
   dispatch(setAppStatusAC('loading'))
   dispatch(changeTodolistEntityStatusAC(todolistId, 'loading'))
   todolistsAPI.deleteTodolist(todolistId)
-    .then((res) => {
-      dispatch(removeTodolistAC(todolistId))
-    })
+  .then((res) => {
+    dispatch(removeTodolistAC(todolistId))
+    dispatch(setAppStatusAC('succeeded'))
+  })
 }
 
 export const addTodolistTC = (title: string) => (dispatch: Dispatch<ThunkDispatch>) => {
@@ -61,7 +62,6 @@ export const addTodolistTC = (title: string) => (dispatch: Dispatch<ThunkDispatc
     .then((res) => {
       dispatch(addTodolistAC(res.data.data.item))
     })
-    
 }
 
 export const changeTodolistTitleTC = (id: string, title: string) => (dispatch: Dispatch<ActionsType>) => {

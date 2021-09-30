@@ -44,7 +44,7 @@ function App({ demo = false }: PropsType) {
                         <IconButton edge="start" color="inherit" aria-label="menu">
                         </IconButton>
                         <Typography variant="h5">
-                            News
+                            Todolist
                         </Typography>
                         {isLoggedIn && <Button color="inherit" onClick={logoutHandler}>Log out</Button>}
                     </Toolbar>

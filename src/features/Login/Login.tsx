@@ -70,7 +70,7 @@ export const Login = () => {
             </FormGroup>
           </FormControl>
         </form>
-        <br/>Login: free@samuraijs.com<br/>Password: free
+        <br/>Login: shobanoff@gmail.com<br/>Password: 123456
       </Grid>
     </Grid>
   )
